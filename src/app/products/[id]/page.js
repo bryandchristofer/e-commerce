@@ -5,17 +5,15 @@ import { useCart } from "../../../context/CartContext";
 
 export default function ProductPage({ params: paramsPromise }) {
   const [product, setProduct] = useState(null);
-  const [id, setId] = useState(null); // State untuk menyimpan ID produk
+  const [id, setId] = useState(null);
   const { addToCart } = useCart();
 
-  // Ambil ID dari `paramsPromise`
   useEffect(() => {
     paramsPromise.then((params) => {
-      setId(params.id); // Simpan ID produk ke state
+      setId(params.id);
     });
   }, [paramsPromise]);
 
-  // Ambil data produk setelah ID tersedia
   useEffect(() => {
     if (id) {
       const fetchProduct = async () => {
@@ -33,7 +31,6 @@ export default function ProductPage({ params: paramsPromise }) {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Gambar Produk */}
         <div className="flex justify-center items-center">
           <img
             src={product.image}
@@ -41,8 +38,6 @@ export default function ProductPage({ params: paramsPromise }) {
             className="w-full h-80 object-contain rounded-lg"
           />
         </div>
-
-        {/* Detail Produk */}
         <div>
           <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
           <p className="text-gray-600 text-lg mb-4">
