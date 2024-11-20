@@ -7,7 +7,7 @@ export default function Navbar() {
   const { cart } = useCart();
 
   return (
-    <nav className="bg-white shadow-md p-4 flex justify-between">
+    <nav className="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
       <Link href="/" className="font-bold text-xl">
         Mini E-Commerce
       </Link>
