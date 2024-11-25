@@ -56,7 +56,8 @@ export default function Cart() {
           <h2 className="text-lg font-bold mb-4">Keranjang</h2>
           {cart.length > 0 ? (
             <div>
-              <ul className="space-y-4">
+              {/* Daftar Barang dengan Scrollable */}
+              <ul className="space-y-4 max-h-60 overflow-y-auto">
                 {cart.map((item) => (
                   <li
                     key={item.id}
