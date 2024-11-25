@@ -22,6 +22,19 @@ export default function Cart() {
     };
   }, []);
 
+  // Hitung total harga
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  // Format harga ke mata uang Indonesia
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(value);
+
   return (
     <div className="relative" ref={cartRef}>
       {/* Tombol Keranjang */}
@@ -42,50 +55,61 @@ export default function Cart() {
         <div className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg p-4 z-50">
           <h2 className="text-lg font-bold mb-4">Keranjang</h2>
           {cart.length > 0 ? (
-            <ul className="space-y-4">
-              {cart.map((item) => (
-                <li key={item.id} className="flex justify-between items-center">
-                  <div className="flex items-center space-x-4">
-                    {/* Gambar Produk */}
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                    <div>
-                      <p className="text-sm font-bold">{item.title}</p>
-                      <p className="text-sm text-gray-500">
-                        Rp {(item.price * 15000).toLocaleString()}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Kuantitas: {item.quantity}
-                      </p>
+            <div>
+              <ul className="space-y-4">
+                {cart.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex justify-between items-center"
+                  >
+                    <div className="flex items-center space-x-4">
+                      {/* Gambar Produk */}
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                      <div>
+                        <p className="text-sm font-bold">{item.title}</p>
+                        <p className="text-sm text-gray-500">
+                          {formatCurrency(item.price * 15000)}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Kuantitas: {item.quantity}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  {/* Tombol Tambah dan Kurangi */}
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="bg-gray-300 text-gray-700 px-2 rounded hover:bg-gray-400"
-                    >
-                      -
-                    </button>
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="bg-gray-300 text-gray-700 px-2 rounded hover:bg-gray-400"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 text-sm hover:underline"
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    {/* Tombol Tambah dan Kurangi */}
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => decreaseQuantity(item.id)}
+                        className="bg-gray-300 text-gray-700 px-2 rounded hover:bg-gray-400"
+                      >
+                        -
+                      </button>
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="bg-gray-300 text-gray-700 px-2 rounded hover:bg-gray-400"
+                      >
+                        +
+                      </button>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-red-500 text-sm hover:underline"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              {/* Total Harga */}
+              <div className="border-t mt-4 pt-4">
+                <p className="text-right text-lg font-bold">
+                  Total: {formatCurrency(totalPrice * 15000)}
+                </p>
+              </div>
+            </div>
           ) : (
             <p className="text-gray-500">Keranjang kosong</p>
           )}
