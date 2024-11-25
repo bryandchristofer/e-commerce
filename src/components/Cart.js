@@ -8,7 +8,6 @@ export default function Cart() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cartRef = useRef();
 
-  // Tutup pop-up keranjang jika klik di luar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cartRef.current && !cartRef.current.contains(event.target)) {
@@ -22,13 +21,11 @@ export default function Cart() {
     };
   }, []);
 
-  // Hitung total harga
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  // Format harga ke mata uang Indonesia
   const formatCurrency = (value) =>
     new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -37,7 +34,6 @@ export default function Cart() {
 
   return (
     <div className="relative" ref={cartRef}>
-      {/* Tombol Keranjang */}
       <button
         onClick={() => setIsCartOpen(!isCartOpen)}
         className="relative focus:outline-none"
@@ -50,13 +46,11 @@ export default function Cart() {
         )}
       </button>
 
-      {/* Pop-Up Keranjang */}
       {isCartOpen && (
-        <div className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg p-4 z-50">
+        <div className="absolute right-0 mt-2 w-96 bg-white shadow-lg rounded-lg p-6 z-50">
           <h2 className="text-lg font-bold mb-4">Keranjang</h2>
           {cart.length > 0 ? (
             <div>
-              {/* Daftar Barang dengan Scrollable */}
               <ul className="space-y-4 max-h-60 overflow-y-auto">
                 {cart.map((item) => (
                   <li
@@ -64,7 +58,6 @@ export default function Cart() {
                     className="flex justify-between items-center"
                   >
                     <div className="flex items-center space-x-4">
-                      {/* Gambar Produk */}
                       <img
                         src={item.image}
                         alt={item.title}
@@ -80,7 +73,6 @@ export default function Cart() {
                         </p>
                       </div>
                     </div>
-                    {/* Tombol Tambah dan Kurangi */}
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => decreaseQuantity(item.id)}
@@ -104,7 +96,6 @@ export default function Cart() {
                   </li>
                 ))}
               </ul>
-              {/* Total Harga */}
               <div className="border-t mt-4 pt-4">
                 <p className="text-right text-lg font-bold">
                   Total: {formatCurrency(totalPrice * 15000)}
