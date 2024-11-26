@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState(""); // State untuk kata kunci pencarian
@@ -59,9 +60,11 @@ export default function HomePage() {
               className="p-4 bg-white shadow-lg rounded-md flex flex-col justify-between hover:shadow-xl transition-shadow duration-300 group"
             >
               {/* Gambar Produk */}
-              <img
+              <Image
                 src={product.image}
                 alt={product.title}
+                width={500}
+                height={500}
                 className="w-full h-48 object-contain mb-4 rounded-md group-hover:scale-105 transition-transform"
               />
 
