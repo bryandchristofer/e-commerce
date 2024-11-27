@@ -1,43 +1,65 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useCart } from "../../../context/CartContext";
+
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .trim();
+}
 
 export default function ProductPage({ params: paramsPromise }) {
   const [product, setProduct] = useState(null);
-  const [id, setId] = useState(null);
+  const [slug, setSlug] = useState(null);
   const { addToCart } = useCart();
 
   useEffect(() => {
     paramsPromise.then((params) => {
-      setId(params.id);
+      setSlug(params.slug);
     });
   }, [paramsPromise]);
 
   useEffect(() => {
-    if (id) {
+    if (slug) {
       const fetchProduct = async () => {
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-        const data = await res.json();
-        setProduct(data);
+        const res = await fetch("https://fakestoreapi.com/products");
+        const products = await res.json();
+
+        const matchedProduct = products.find(
+          (item) => generateSlug(item.title) === slug
+        );
+
+        if (matchedProduct) {
+          setProduct(matchedProduct);
+        } else {
+          console.error("Produk tidak ditemukan.");
+        }
       };
 
       fetchProduct();
     }
-  }, [id]);
+  }, [slug]);
 
   if (!product) return <p>Memuat produk...</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Gambar Produk */}
         <div className="flex justify-center items-center">
-          <img
+          <Image
             src={product.image}
             alt={product.title}
+            width={500}
+            height={500}
             className="w-full h-80 object-contain rounded-lg"
           />
         </div>
+        {/* Detail Produk */}
         <div>
           <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
           <p className="text-gray-600 text-lg mb-4">

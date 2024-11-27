@@ -4,21 +4,32 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function HomePage() {
-  const [searchTerm, setSearchTerm] = useState(""); // State untuk kata kunci pencarian
-  const [products, setProducts] = useState([]); // State untuk menyimpan daftar produk
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .trim();
+}
 
-  // Fetch data produk saat komponen dimount
+export default function HomePage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
     async function fetchProducts() {
       const res = await fetch("https://fakestoreapi.com/products");
       const data = await res.json();
-      setProducts(data);
+
+      const productsWithSlug = data.map((product) => ({
+        ...product,
+        slug: generateSlug(product.title),
+      }));
+      setProducts(productsWithSlug);
     }
     fetchProducts();
   }, []);
 
-  // Filter produk berdasarkan kata kunci pencarian
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -56,7 +67,7 @@ export default function HomePage() {
           filteredProducts.map((product) => (
             <Link
               key={product.id}
-              href={`/products/${product.id}`}
+              href={`/products/${product.slug}`}
               className="p-4 bg-white shadow-lg rounded-md flex flex-col justify-between hover:shadow-xl transition-shadow duration-300 group"
             >
               {/* Gambar Produk */}
