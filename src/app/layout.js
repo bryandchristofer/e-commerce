@@ -2,6 +2,11 @@ import "../styles/globals.css";
 import { CartProvider } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 
+export const metadata = {
+  title: "Mini E-Commerce",
+  description: "Belanja produk terbaik di toko online kami!",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
