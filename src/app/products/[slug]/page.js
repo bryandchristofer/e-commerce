@@ -9,7 +9,8 @@ function generateSlug(title) {
     .trim();
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const slug = params.slug;
 
   const res = await fetch("https://fakestoreapi.com/products");
@@ -32,7 +33,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ProductPage({ params }) {
+export default async function ProductPage({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const slug = params.slug;
 
   const res = await fetch("https://fakestoreapi.com/products");
@@ -57,7 +59,7 @@ export default async function ProductPage({ params }) {
             className="w-full h-80 object-contain rounded-lg"
           />
         </div>
-        {/* Detail Produk (Komponen Client) */}
+        {/* Detail Produk */}
         <ProductClient product={product} />
       </div>
     </div>
